@@ -7,7 +7,7 @@ export default function Header() {
                 <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
                     <Link to="/" className="flex items-center">
                         <img
-                            src="http://localhost:3000/logo-orange.png"
+                            src="/logo-orange.png"
                             className="mr-3 h-16"
                             alt="logo"
                         />

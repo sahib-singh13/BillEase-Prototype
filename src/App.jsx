@@ -1,51 +1,69 @@
-import React from 'react'
-import { useState,useEffect } from 'react'
-import { NavLink } from 'react-router-dom'
-import toast from 'react-hot-toast'
-import { Route,Router,Routes } from 'react-router-dom'
-import { Intro } from './components/Intro'
-import { UserType } from './Pages/UserType'
-
-
-
-import Footer from './components/Footer'
-import CustomerPage from './Pages/CustomerPage'
-import { FcContacts } from 'react-icons/fc'
-import Contact from './Pages/Contact'
-import RetailerPage from './Pages/RetailerPage'
-import Header from './components/Header'
-
+import React, { useState, useEffect } from 'react';
+import { Route, Routes, useLocation } from 'react-router-dom';
+import { Intro } from './components/Intro';
+import { UserType } from './Pages/UserType';
+import Footer from './components/Footer';
+import CustomerPage from './Pages/CustomerPage';
+import Contact from './Pages/Contact';
+import RetailerPage from './Pages/RetailerPage';
+import Header from './components/Header';
+import RegisterPage from './Pages/RegisterPage';
+import DashBoard from './Pages/DashBoard';
+import DashboardHeader from './components/DashboardHeader';
 
 const App = () => {
+    const [showSplash, setShowSplash] = useState(true);
+    const location = useLocation();
 
-  const [showSplash, setShowSplash] = useState(true);
+    // Splash screen logic
+    useEffect(() => {
+        const hasSeenSplash = localStorage.getItem('hasSeenSplash');
+        
+        if (!hasSeenSplash) {
+            const timer = setTimeout(() => {
+                setShowSplash(false);
+                localStorage.setItem('hasSeenSplash', 'true');
+            }, 3000);
+            
+            return () => clearTimeout(timer);
+        } else {
+            setShowSplash(false);
+        }
+    }, []);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowSplash(false);
-    }, 3500); 
-    return () => clearTimeout(timer); 
-  }, []);
+    // Dashboard loading state
+    const [isDashboardLoading, setIsDashboardLoading] = useState(false);
+    useEffect(() => {
+        if (location.pathname === '/dashboard') {
+            setIsDashboardLoading(true);
+            setTimeout(() => setIsDashboardLoading(false), 0);
+        }
+    }, [location.pathname]);
 
-  if (showSplash) {
+    if (showSplash) {
+        return <Intro />;
+    }
+
     return (
-       <Intro/>
+        <div className="app">
+            {location.pathname === '/dashboard' && !isDashboardLoading ? (
+                <DashboardHeader />
+            ) : (
+                <Header />
+            )}
+
+            <Routes>
+                <Route path="/" element={<UserType />} />
+                <Route path="/customer" element={<CustomerPage />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/retailer" element={<RetailerPage />} />
+                <Route path="/register" element={<RegisterPage />} />
+                <Route path="/dashboard" element={<DashBoard />} />
+            </Routes>
+
+            <Footer />
+        </div>
     );
-  }
+};
 
-  return (
-    <div>
-      <Header/>
-      <Routes>
-      <Route path="/" element={<UserType/>}/>
-      <Route path="/customer" element={<CustomerPage/>}/>
-      <Route path='/contact' element = {<Contact/>} />
-      <Route path='/retailer' element = {<RetailerPage/>}  />
-      </Routes>
-      <Footer/>
-    
-    </div>
-  )
-}
-
-export default App
+export default App;

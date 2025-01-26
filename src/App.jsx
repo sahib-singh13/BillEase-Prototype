@@ -10,6 +10,7 @@ import Header from './components/Header';
 import RegisterPage from './Pages/RegisterPage';
 import DashBoard from './Pages/DashBoard';
 import DashboardHeader from './components/DashboardHeader';
+import About from './Pages/About';
 
 const App = () => {
     const [showSplash, setShowSplash] = useState(true);
@@ -59,6 +60,7 @@ const App = () => {
                 <Route path="/retailer" element={<RetailerPage />} />
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="/dashboard" element={<DashBoard />} />
+                <Route path="/about" element={<About/>} />
             </Routes>
 
             <Footer />

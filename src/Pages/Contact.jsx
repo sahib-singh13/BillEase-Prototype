@@ -1,7 +1,34 @@
-import React from 'react';
-import Header from '../components/Header';
+import React, { useEffect, useState } from 'react';
+import toast from 'react-hot-toast'
+import { ToastContainer } from 'react-toastify';
+
 
 export default function Contact() {
+
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [tel, setTel] = useState('');
+
+    const handleSubmit = (e) =>{
+        e.preventDefault();
+        
+        if(!name) {
+            toast.error('Please provide your full name');
+            return;
+        }
+
+        if(!email){
+            toast.error('Please provide your email address');
+            return;
+        }
+
+        if(!tel){
+            toast.error('Please provide your phone number');
+            return;
+        }
+
+        toast.success('Thanks for reaching out!');
+    }
     return (
         <div>
             <div className="relative flex items-center justify-center min-h-[700px] bg-white">
@@ -36,12 +63,13 @@ export default function Contact() {
                         </div>
 
                         {/* Contact Form */}
-                        <form className="p-6 bg-white shadow rounded-lg space-y-4">
+                        <form onSubmit={handleSubmit} className="p-6 bg-white shadow rounded-lg space-y-4">
                             <input
                                 type="text"
                                 name="name"
                                 id="name"
                                 placeholder="Full Name"
+                                onChange={(event) => setName(event.target.value)}
                                 className="w-full py-3 px-4 border rounded-lg focus:border-orange-500 focus:outline-none"
                             />
                             <input
@@ -49,12 +77,15 @@ export default function Contact() {
                                 name="email"
                                 id="email"
                                 placeholder="Email"
+                                onChange={(event) => setEmail(event.target.value)}
                                 className="w-full py-3 px-4 border rounded-lg focus:border-orange-500 focus:outline-none"
                             />
                             <input
                                 type="tel"
+                                maxLength={10}
                                 name="tel"
                                 id="tel"
+                                onChange={(event) => setTel(event.target.value)}
                                 placeholder="Telephone Number"
                                 className="w-full py-3 px-4 border rounded-lg focus:border-orange-500 focus:outline-none"
                             />
@@ -64,7 +95,9 @@ export default function Contact() {
                             >
                                 Submit
                             </button>
+                            <ToastContainer/>
                         </form>
+                        
                     </div>
                 </div>
             </div>
